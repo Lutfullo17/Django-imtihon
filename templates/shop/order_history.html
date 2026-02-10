@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <title>Sotib olganlarim</title>
+  <style>
+    body{margin:0;font-family:system-ui;background:#0b1220;color:#e8eefc}
+    .wrap{width:min(1000px,92vw);margin:24px auto}
+    .card{margin-bottom:16px;padding:16px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.04)}
+    .item{display:flex;justify-content:space-between;
+      padding:8px 0;border-top:1px solid rgba(255,255,255,.08)}
+    .item:first-child{border-top:none}
+    .muted{color:#94a3b8;font-size:13px}
+      .btn{
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+  text-decoration:none;
+}
+.btn:hover{background:rgba(255,255,255,.1);}
+.btn-primary{
+  background:var(--primary);
+  border:none;
+}
+.btn-danger{
+  background:var(--danger);
+  border:none;
+}
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <h2>🛍 Sotib olgan mahsulotlarim</h2>
+
+      <a href="{% url 'cart' %}" class="btn">← Orqaga</a>
+
+  {% for order in orders %}
+    <div class="card">
+      <div style="font-weight:900;">
+        Buyurtma #{{ order.id }}
+      </div>
+      <div class="muted">
+        Sana: {{ order.created_at|date:"d-m-Y H:i" }}
+      </div>
+
+      {% for item in order.order_items.all %}
+        <div class="item">
+          <div>
+            {{ item.product.title }}
+            <div class="muted">{{ item.quantity }} dona</div>
+          </div>
+          <div>
+            {{ item.price }}
+          </div>
+        </div>
+      {% endfor %}
+
+      <div style="margin-top:10px;font-weight:900;">
+        Jami: {{ order.total_price }}
+      </div>
+    </div>
+
+  {% empty %}
+    <p class="muted">Siz hali hech narsa sotib olmadingiz.</p>
+  {% endfor %}
+</div>
+
+</body>
+</html>

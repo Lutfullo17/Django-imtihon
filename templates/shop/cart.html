@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="uz" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Savat</title>
+
+<style>
+:root{
+  --bg:#0b1220;
+  --panel:#0f1b33;
+  --text:#e8eefc;
+  --muted:#94a3b8;
+  --line:rgba(255,255,255,.1);
+  --primary:#4f8cff;
+  --danger:#ff4d4d;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+  color:var(--text);
+}
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      background: rgba(11,18,32,.65);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+      padding: 15px 10px;
+
+    }
+    .topbar__in{
+      padding: 12px 15px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .logo{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:.2px;
+    }
+    .logo__mark{
+      width:34px; height:34px; border-radius:12px;
+      background: rgba(79,140,255,.25);
+      border:1px solid rgba(79,140,255,.35);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900;
+    }
+    .logo__text{ line-height:1.1; }
+    .logo__text small{ display:block; color:var(--muted); font-weight:600; font-size:12px; margin-top:2px; }
+
+    .search{
+      flex: 1;
+      min-width: 200px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding: 10px;
+      border-radius: 16px;
+      position: relative;
+    }
+    .search input{
+      flex:1;
+      min-width: 100px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(12,23,48,.6);
+      color: var(--text);
+      outline:none;
+    }
+    .search input:focus{
+      border-color: rgba(79,140,255,.55);
+      box-shadow: 0 0 0 4px rgba(79,140,255,.15);
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      font-weight:800;
+      cursor:pointer;
+      transition:.15s ease;
+      white-space:nowrap;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
+    .btn--primary{
+      border-color: rgba(79,140,255,.35);
+      background: rgba(79,140,255,.22);
+    }
+    .btn--primary:hover{ background: rgba(79,140,255,.30); }
+    .btn[disabled]{ opacity:.6; cursor:not-allowed; transform:none; }
+
+    .toplinks{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-weight:700;
+      font-size:13px;
+    }
+    .pill b{ color:var(--text); }
+
+.container{
+  width:min(1100px,92vw);
+  margin:30px auto;
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+h1{margin:0;}
+.btn{
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+  text-decoration:none;
+}
+.btn:hover{background:rgba(255,255,255,.1);}
+.btn-primary{
+  background:var(--primary);
+  border:none;
+}
+.btn-danger{
+  background:var(--danger);
+  border:none;
+}
+
+.card{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:15px;
+  margin-bottom:15px;
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+.card img{
+  width:100px;
+  height:100px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.card-body{
+  flex:1;
+}
+
+.price{
+  font-weight:bold;
+  margin-top:5px;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.summary{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:20px;
+  margin-top:20px;
+}
+
+.total{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.empty{
+  text-align:center;
+  margin-top:40px;
+  color:var(--muted);
+}
+input[type="number"]{
+  width:60px;
+  padding:6px;
+  border-radius:8px;
+  border:1px solid var(--line);
+  background:#1e293b;
+  color:white;
+}
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="wrap">
+      <div class="topbar__in">
+        <a class="logo" href="{% url 'home' %}">
+          <span class="logo__mark">OS</span>
+          <span class="logo__text">
+            Online Shop
+            <small>Uzum/Yandex style</small>
+          </span>
+        </a>
+
+        <form id="searchForm" class="search" method="get" action="{% url 'maxsulotlar' %}">
+          <input id="searchInput" type="text" name="q" placeholder="Mahsulot qidiring: telefon, noutbuk..." value="{{ q|default:'' }}">
+          <button id="searchBtn" class="btn btn--primary" type="submit">Qidirish</button>
+          <div class="loadingbar"></div>
+        </form>
+
+        <div class="toplinks">
+          {% if request.user.is_authenticated %}
+            <a class="pill" href="{% url 'sevimlilar' %}">❤️ <b>Sevimlilar</b></a>
+            <a class="pill" href="#">🛒 <b>Savat</b></a>
+            <a class="pill" href="{% url 'profil' %}">👤 <b>Profil</b></a>
+          {% else %}
+            <a class="pill" href="{% url 'login' %}">🔑 <b>Kirish</b></a>
+            <a class="pill" href="{% url 'register' %}">📝 <b>Register</b></a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+<div class="container">
+
+<div class="top">
+  <h1>🛒 Mening savatim</h1>
+  <a href="{% url 'home' %}" class="btn">← Home</a>
+</div>
+
+{% if items %}
+
+  {% for item in items %}
+  <div class="card">
+
+    {% if item.product.image %}
+      <img src="{{ item.product.image.url }}">
+    {% else %}
+      <img src="https://via.placeholder.com/150">
+    {% endif %}
+
+    <div class="card-body">
+      <h3>{{ item.product.title }}</h3>
+      <div class="price">
+        {{ item.product.price }} so'm × {{ item.quantity }}
+      </div>
+
+      <div class="actions">
+
+        <!-- quantity update -->
+        <form method="post" action="{% url 'cart_update' id=item.id %}">
+          {% csrf_token %}
+          <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+          <button class="btn btn-primary" type="submit">Yangilash</button>
+        </form>
+
+        <!-- remove -->
+        <form method="post" action="{% url 'cart_remove' id=item.id %}">
+          {% csrf_token %}
+          <button class="btn btn-danger" type="submit">O‘chirish</button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+  {% endfor %}
+
+  <div class="summary">
+    <div class="total">
+      Umumiy: {{ total }} so'm
+    </div>
+
+    <a href="{% url 'checkout' %}" class="btn btn-primary">
+      Checkout
+    </a>
+      <a href="{% url 'order_history' %}" class="btn btn-primary">
+          🛍 Buyurtmalarim
+      </a>
+
+  </div>
+
+ {% else %}
+
+  <div class="empty">
+    <h2>Savat bo‘sh 😅</h2>
+    <p>Mahsulotlarni savatga qo‘shing.</p>
+    <br>
+    <a href="{% url 'maxsulotlar' %}" class="btn btn-primary">
+      Mahsulotlarni ko‘rish
+    </a>
+      <a href="{% url 'order_history' %}" class="btn btn-primary">
+          🛍 Buyurtmalarim
+      </a>
+
+  </div>
+
+    {% endif %}
+
+    </div>
+</div>
+</body>
+</html>

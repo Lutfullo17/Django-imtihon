@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if is_edit %}Mahsulot tahrirlash{% else %}Mahsulot qo‘shish{% endif %}</title>
+
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#0f1b33; --text:#e8eefc; --muted:#94a3b8;
+      --line:rgba(255,255,255,.12); --primary:#4f8cff;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(900px 600px at 15% 10%, rgba(79,140,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.06), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap{width:min(980px,92vw); margin:26px auto;}
+    .top{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+      padding:14px 16px;border:1px solid var(--line);border-radius:16px;
+      background:rgba(255,255,255,.04);backdrop-filter:blur(10px);
+    }
+    .top h1{margin:0;font-size:18px;}
+    .top p{margin:4px 0 0 0;color:var(--muted);font-size:13px;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 14px;border-radius:12px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--text);text-decoration:none;font-weight:800;
+      cursor:pointer;transition:.15s;
+    }
+    .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.06);}
+    .btn--primary{border-color:rgba(79,140,255,.35);background:rgba(79,140,255,.22);}
+    .btn--primary:hover{background:rgba(79,140,255,.30);}
+
+    .card{
+      margin-top:14px;
+      padding:16px;border:1px solid var(--line);border-radius:16px;
+      background:rgba(255,255,255,.03);
+    }
+
+    form{display:grid; gap:12px;}
+    label{font-weight:800;font-size:13px;}
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(12,23,48,.65);
+      color:var(--text);
+      outline:none;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color:rgba(79,140,255,.60);
+      box-shadow:0 0 0 4px rgba(79,140,255,.15);
+    }
+    .hint{color:var(--muted);font-size:12px;}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:720px){.row{grid-template-columns:1fr;}}
+
+    .error{
+      padding:12px;border-radius:12px;border:1px solid rgba(255,77,77,.35);
+      background:rgba(255,77,77,.10);color:#ffd2d2;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>{% if is_edit %}✏️ Mahsulot tahrirlash{% else %}➕ Mahsulot qo‘shish{% endif %}</h1>
+      <p>Sotuvchi panel — mahsulot ma’lumotlarini kiriting</p>
+    </div>
+    <a class="btn" href="{% url 'seller_dashboard' %}">← Orqaga</a>
+  </div>
+
+  <div class="card">
+    {% if form.errors %}
+      <div class="error">
+        <b>Xatolik bor:</b> Iltimos, maydonlarni to‘g‘ri to‘ldiring.
+      </div>
+      <br>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {# Agar xohlasang fieldlarni qo‘lda chiqaramiz; hozircha form.as_p #}
+      {{ form.as_p }}
+
+      <button class="btn btn--primary" type="submit">
+        {% if is_edit %}Saqlash{% else %}Qo‘shish{% endif %}
+      </button>
+    </form>
+
+    <p class="hint">Eslatma: rasm chiqishi uchun MEDIA_URL/MEDIA_ROOT va urls.py media sozlamasi kerak.</p>
+  </div>
+</div>
+
+</body>
+</html>

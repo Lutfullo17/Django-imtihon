@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kirish</title>
+
+<style>
+:root{
+  --bg:#0b1220;
+  --text:#e8eefc;
+  --muted:#a9b6d6;
+  --line:rgba(255,255,255,.10);
+  --primary:#4f8cff;
+  --danger:#ff4d4d;
+}
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 10% 10%, rgba(79,140,255,.18), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.06), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.card{
+  width:min(420px, 95vw);
+  border-radius:20px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(12px);
+  box-shadow:0 25px 60px rgba(0,0,0,.5);
+  padding:35px;
+}
+
+h1{
+  margin:0 0 20px 0;
+  font-size:22px;
+  text-align:center;
+}
+
+form{
+  display:grid;
+  gap:15px;
+}
+
+label{
+  font-size:13px;
+  color:var(--muted);
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(12,23,48,.6);
+  color:var(--text);
+  outline:none;
+}
+
+input:focus{
+  border-color:rgba(79,140,255,.6);
+  box-shadow:0 0 0 3px rgba(79,140,255,.15);
+}
+
+.btn{
+  margin-top:5px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(79,140,255,.4);
+  background:rgba(79,140,255,.25);
+  color:var(--text);
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  background:rgba(79,140,255,.35);
+}
+
+.error{
+  background:rgba(255,77,77,.2);
+  border:1px solid rgba(255,77,77,.4);
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+.footer{
+  margin-top:18px;
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.footer a{
+  color:var(--primary);
+  text-decoration:none;
+}
+
+.footer a:hover{
+  text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>🔑 Tizimga kirish</h1>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {% if error %}
+      <div class="error">
+        {{ error }}
+      </div>
+    {% endif %}
+
+    <div>
+      <label>Username</label>
+      <input type="text" name="username" required>
+    </div>
+
+    <div>
+      <label>Password</label>
+      <input type="password" name="password" required>
+    </div>
+
+    <button class="btn" type="submit">Kirish</button>
+  </form>
+
+  <div class="footer">
+    Hisobingiz yo‘qmi?
+    <a href="{% url 'register' %}">Ro‘yxatdan o‘tish</a>
+  </div>
+</div>
+
+</body>
+</html>

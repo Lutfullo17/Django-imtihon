@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mahsulotlar</title>
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1b33;
+      --card2:#0c1730;
+      --text:#e8eefc;
+      --muted:#a9b6d6;
+      --line:rgba(255,255,255,.10);
+      --primary:#4f8cff;
+      --good:#22c55e;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(79,140,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.06), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{
+      width:min(1120px, 92vw);
+      margin: 24px auto 42px auto;
+    }
+
+
+     /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      background: rgba(11,18,32,.65);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+      padding: 15px 10px;
+
+    }
+    .topbar__in{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .logo{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:.2px;
+    }
+    .logo__mark{
+      width:34px; height:34px; border-radius:12px;
+      background: rgba(79,140,255,.25);
+      border:1px solid rgba(79,140,255,.35);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900;
+    }
+    .logo__text{ line-height:1.1; }
+    .logo__text small{ display:block; color:var(--muted); font-weight:600; font-size:12px; margin-top:2px; }
+
+    .search{
+      flex: 1;
+      min-width: 200px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding: 10px;
+      border-radius: 16px;
+      position: relative;
+    }
+    .search input{
+      flex:1;
+      min-width: 100px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(12,23,48,.6);
+      color: var(--text);
+      outline:none;
+    }
+    .search input:focus{
+      border-color: rgba(79,140,255,.55);
+      box-shadow: 0 0 0 4px rgba(79,140,255,.15);
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      font-weight:800;
+      cursor:pointer;
+      transition:.15s ease;
+      white-space:nowrap;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
+    .btn--primary{
+      border-color: rgba(79,140,255,.35);
+      background: rgba(79,140,255,.22);
+    }
+    .btn--primary:hover{ background: rgba(79,140,255,.30); }
+    .btn[disabled]{ opacity:.6; cursor:not-allowed; transform:none; }
+
+    .toplinks{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-weight:700;
+      font-size:13px;
+    }
+    .pill b{ color:var(--text); }
+
+
+    /* topbar */
+    .top{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      padding: 14px 16px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .brand p{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .chip{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      border-radius:14px;
+      padding:10px 14px;
+      border:1px solid var(--line);
+      cursor:pointer;
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      font-weight:700;
+      transition:.15s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.06); }
+    .btn--primary{
+      border-color: rgba(79,140,255,.35);
+      background: rgba(79,140,255,.20);
+    }
+    .btn--primary:hover{ background: rgba(79,140,255,.28); }
+    .btn--ghost{ color:var(--muted); }
+
+    /* search */
+    .search{
+      margin-top: 14px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: rgba(255,255,255,.03);
+      padding: 14px;
+    }
+    .search form{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .search input{
+      flex: 1;
+      min-width: 220px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(12,23,48,.6);
+      color:var(--text);
+      outline:none;
+    }
+    .search input:focus{
+      border-color: rgba(79,140,255,.55);
+      box-shadow: 0 0 0 4px rgba(79,140,255,.15);
+    }
+    .search .hint{
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* grid */
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 1020px){
+      .grid{ grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 760px){
+      .grid{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 460px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: rgba(12,23,48,.45);
+      overflow:hidden;
+      box-shadow: 0 18px 45px rgba(0,0,0,.25);
+      transition: .15s ease;
+      display:flex;
+      flex-direction:column;
+      min-height: 320px;
+    }
+    .card:hover{ transform: translateY(-2px); background: rgba(12,23,48,.60); }
+
+    .img{
+      height: 160px;
+      background: linear-gradient(135deg, rgba(79,140,255,.25), rgba(255,255,255,.06));
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: rgba(255,255,255,.75);
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+    .img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .body{
+      padding: 12px 12px 14px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+    .title{
+      margin:0;
+      font-size:15px;
+      line-height:1.35;
+    }
+    .desc{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .row{
+      margin-top:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .price{
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .tag{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .action-row{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+}
+
+.like-btn{
+    width:45px;
+    border:none;
+    border-radius:12px;
+    font-size:18px;
+    cursor:pointer;
+    background:rgba(255,255,255,.08);
+    transition:.2s;
+}
+
+.like-btn:hover{
+    background:rgba(255,0,0,.15);
+    transform:scale(1.1);
+}
+
+.add-btn{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:12px;
+    font-weight:800;
+    cursor:pointer;
+    background:linear-gradient(135deg,#4f8cff,#3b82f6);
+    color:white;
+}
+
+
+    .empty{
+      margin-top: 18px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: rgba(255,255,255,.03);
+      padding: 38px 16px;
+      text-align:center;
+      color:var(--muted);
+    }
+    .empty h2{ margin:0; color:var(--text); }
+    .empty p{ margin:10px auto 0 auto; max-width: 55ch; }
+  </style>
+</head>
+
+<body>
+
+
+  <header class="topbar">
+    <div class="wrap">
+      <div class="topbar__in">
+        <a class="logo" href="{% url 'home' %}">
+          <span class="logo__mark">OS</span>
+          <span class="logo__text">
+            Online Shop
+            <small>Uzum/Yandex style</small>
+          </span>
+        </a>
+
+        <form id="searchForm" class="search" method="get" action="{% url 'maxsulotlar' %}">
+          <input id="searchInput" type="text" name="q" placeholder="Mahsulot qidiring: telefon, noutbuk..." value="{{ q|default:'' }}">
+          <button id="searchBtn" class="btn btn--primary" type="submit">Qidirish</button>
+          <div class="loadingbar"></div>
+        </form>
+
+        <div class="toplinks">
+          {% if request.user.is_authenticated %}
+            <a class="pill" href="{% url 'sevimlilar' %}">❤️ <b>Sevimlilar</b></a>
+            <a class="pill" href="#">🛒 <b>Savat</b></a>
+            <a class="pill" href="{% url 'profil' %}">👤 <b>Profil</b></a>
+          {% else %}
+            <a class="pill" href="{% url 'login' %}">🔑 <b>Kirish</b></a>
+            <a class="pill" href="{% url 'register' %}">📝 <b>Register</b></a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+
+  <div class="wrap">
+
+    <div class="top">
+      <div class="brand">
+        <h1>Mahsulotlar</h1>
+        <p>Qidiruv va yangi qo‘shilgan mahsulotlar</p>
+      </div>
+
+      <div class="actions">
+        {% if q %}
+          <span class="chip">Natija: “{{ q }}”</span>
+          <a class="btn btn--ghost" href="{% url 'maxsulotlar' %}">Tozalash</a>
+        {% else %}
+          <span class="chip">Hammasi</span>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+          <a class="btn" href="{% url 'sevimlilar' %}">Sevimlilar</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="search">
+      <form method="get">
+        <!-- QidiruvForm bitta field bo‘lsa, shuni ishlatamiz -->
+        {% if form.q %}
+          {{ form.q }}
+        {% else %}
+          <input type="text" name="q" placeholder="Mahsulot nomi yoki tavsifi bo‘yicha qidirish..." value="{{ q }}">
+        {% endif %}
+        <button class="btn btn--primary" type="submit">Qidirish</button>
+      </form>
+      <div class="hint">Masalan: “telefon”, “noutbuk”, “krasovka” …</div>
+    </div>
+{% if maxsulotlar %}
+  <div class="grid">
+    {% for p in maxsulotlar %}
+      <div class="card">
+
+        <a href="{% url 'mahsulot_detail' id=p.id %}">
+          <div class="img">
+            {% if p.image %}
+              <img src="{{ p.image.url }}" alt="{{ p.title }}">
+            {% endif %}
+          </div>
+        </a>
+
+        <div class="body">
+
+          <a href="{% url 'mahsulot_detail' id=p.id %}">
+            <h3 class="title">{{ p.title }}</h3>
+          </a>
+
+          {% if p.desc %}
+            <p class="desc">{{ p.desc }}</p>
+          {% else %}
+            <p class="desc">Tavsif mavjud emas.</p>
+          {% endif %}
+
+          <div class="row">
+            <div class="price">
+              {% if p.price %}
+                {{ p.price }} so‘m
+              {% else %}
+                Narx yo‘q
+              {% endif %}
+            </div>
+
+            <span class="tag">
+              {% if p.created_at %}
+                {{ p.created_at|date:"d M" }}
+              {% else %}
+                yangi
+              {% endif %}
+            </span>
+          </div>
+
+          <!-- 🔥 LIKE + SAVAT -->
+          <div class="action-row">
+
+            {% if request.user.is_authenticated %}
+
+              <!-- LIKE -->
+              <form method="post" action="{% url 'like_toggle' p.id %}">
+                {% csrf_token %}
+                <button type="submit" class="like-btn">❤️</button>
+              </form>
+
+              <!-- SAVAT -->
+              <form method="post" action="{% url 'add_to_cart' p.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="add-btn">🛒 Savat</button>
+              </form>
+
+            {% else %}
+              <a href="{% url 'login' %}" class="add-btn" style="width:100%; text-align:center;">
+                Kirish kerak
+              </a>
+            {% endif %}
+
+          </div>
+
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty">
+    <h2>Mahsulot topilmadi</h2>
+    <p>Qidiruv so‘zingizni o‘zgartirib ko‘ring yoki keyinroq yana urinib ko‘ring.</p>
+  </div>
+{% endif %}
+
+
+  </div>
+</body>
+</html>

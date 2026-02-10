@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mahsulotlarim</title>
+  <style>
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,Arial;background:#f6f7fb;color:#111}
+    .wrap{max-width:1100px;margin:28px auto;padding:0 16px}
+    .top{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .title{font-size:22px;font-weight:700}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:10px 14px;
+      background:#111;color:#fff;text-decoration:none;font-weight:600;cursor:pointer}
+    .btn:active{transform:translateY(1px)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media (max-width: 900px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 560px){.grid{grid-template-columns:1fr}.top{flex-direction:column;align-items:flex-start}}
+    .card{background:#fff;border:1px solid #e8eaf2;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,.05)}
+    .img{width:100%;height:190px;background:#eef1f7;display:block;object-fit:cover}
+    .body{padding:12px}
+    .name{font-weight:800;font-size:16px;line-height:1.2;margin:2px 0 6px}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;color:#556; font-size:13px}
+    .price{margin-top:10px;font-weight:800}
+    .actions{display:flex;gap:8px;margin-top:12px}
+    .a{flex:1;text-align:center;padding:9px 10px;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px}
+    .edit{background:#eef2ff;color:#1e3a8a;border:1px solid #dbeafe}
+    .del{background:#fff1f2;color:#9f1239;border:1px solid #ffe4e6}
+    .empty{padding:22px;border:1px dashed #cbd5e1;border-radius:14px;background:#fff;color:#475569}
+      .back {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #111;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.back:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.back:active {
+    transform: translateY(0);
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="title">Mening mahsulotlarim</div>
+      <a class="btn" href="{% url 'mahsulot_qoshish' %}">+ Mahsulot qo‘shish</a>
+        <a class="btn" href="{% url 'seller_dashboard' %}">⬅ Orqaga</a>
+
+    </div>
+
+    {% if mahsulotlar %}
+      <div class="grid">
+        {% for m in mahsulotlar %}
+          <div class="card">
+            {% if m.image %}
+              <img class="img" src="{{ m.image.url }}" alt="{{ m.title }}">
+            {% else %}
+              <div class="img"></div>
+            {% endif %}
+
+            <div class="body">
+              <div class="name">{{ m.title }}</div>
+              <div class="meta">
+                <span>Kategoriya: {{ m.category.name }}</span>
+                <span>•</span>
+                <span>Sana: {{ m.created_at|date:"d.m.Y" }}</span>
+              </div>
+
+              <div class="price">Narx: {{ m.price }}</div>
+
+              <div class="actions">
+                <a class="a edit" href="{% url 'mahsulot_tahrirlash' m.id %}">Tahrirlash</a>
+                <a class="a del" href="{% url 'mahsulot_ochirish' m.id %}">O‘chirish</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">Hozircha mahsulot yo‘q. Yuqoridan “Mahsulot qo‘shish” ni bosing.</div>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Xabarlar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            background: #0f172a;
+            color: white;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #3b82f6;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .message-box {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #94a3b8;
+            padding: 40px 0;
+        }
+
+        a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    {% if form %}
+        <!-- XABAR YUBORISH -->
+        <div class="card">
+            <h1>Sotuvchiga xabar yozish</h1>
+
+            {% if mahsulot %}
+                <p>Mahsulot: <strong>{{ mahsulot.title }}</strong></p>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                {% endfor %}
+
+                <button type="submit">Yuborish</button>
+            </form>
+        </div>
+
+    {% else %}
+        <!-- XABARLARIM -->
+        <div class="card">
+            <h1>Mening xabarlarim</h1>
+
+            {% if xabarlar %}
+                {% for x in xabarlar %}
+                    <div class="message-box">
+                        <div class="meta">
+                            Kimdan: <strong>{{ x.sender.username }}</strong> |
+                            {{ x.created_at|date:"d M Y H:i" }}
+                        </div>
+
+                        {% if x.product %}
+                            <div class="meta">
+                                Mahsulot:
+                                <a href="{% url 'mahsulot_detail' id=x.product.id %}">
+                                    {{ x.product.title }}
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div>
+                            {{ x.text|linebreaksbr }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty">
+                    Hozircha xabar yo‘q
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

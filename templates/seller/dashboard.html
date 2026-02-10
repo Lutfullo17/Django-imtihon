@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sotuvchi panel</title>
+  <style>
+    body{margin:0;font-family:system-ui;background:#0b1220;color:#e8eefc}
+    .wrap{width:min(1100px,92vw);margin:24px auto}
+    .top{display:flex;justify-content:space-between;align-items:center;
+         padding:16px;border:1px solid rgba(255,255,255,.1);border-radius:14px;
+         background:rgba(255,255,255,.04)}
+    .grid{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .card{padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,.1);
+          background:rgba(255,255,255,.03);text-decoration:none;color:inherit}
+    .card:hover{background:rgba(255,255,255,.06)}
+    .muted{color:#94a3b8}
+    @media(max-width:800px){.grid{grid-template-columns:1fr}}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);
+         background:rgba(255,255,255,.04);color:#e8eefc;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div style="font-weight:900;font-size:18px;">📦 Sotuvchi panel</div>
+        <div class="muted">Mahsulotlar, buyurtmalar va xabarlar</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="btn" href="{% url 'profil' %}">👤 Profil</a>
+        <a class="btn" href="{% url 'logout' %}">🚪 Chiqish</a>
+      </div>
+    </div>
+
+    <div class="grid">
+      <a class="card" href="{% url 'mahsulotlarim' %}">
+        <div style="font-weight:900;">📦 Mening mahsulotlarim</div>
+        <div class="muted">Ro‘yxat, tahrirlash, o‘chirish</div>
+      </a>
+
+        <a class="card" href="{% url 'category_list' %}">
+          <div style="font-weight:900;">🗂 Category</div>
+          <div class="muted">Category qo‘shish va boshqarish</div>
+        </a>
+
+      <a class="card" href="{% url 'mahsulot_qoshish' %}">
+        <div style="font-weight:900;">➕ Mahsulot qo‘shish</div>
+        <div class="muted">Yangi mahsulot yaratish</div>
+      </a>
+
+      <a class="card" href="{% url 'messages' %}">
+        <div style="font-weight:900;">💬 Xabarlar</div>
+        <div class="muted">Mijozlar bilan yozishmalar</div>
+      </a>
+        <a class="card" href="{% url 'seller_comments' %}">
+          <div style="font-weight:900;">📝 Izohlar</div>
+          <div class="muted">Mahsulotlarga yozilgan commentlar</div>
+        </a>
+        <a class="card" href="{% url 'seller_sold_items' %}">
+          <div style="font-weight:900;">✅ Sotilgan mahsulotlar</div>
+          <div class="muted">Sotuvlar ro‘yxati</div>
+        </a>
+
+
+
+    </div>
+  </div>
+</body>
+</html>

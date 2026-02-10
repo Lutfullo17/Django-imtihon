@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profil</title>
+
+<style>
+:root{
+  --bg:#0b1220;
+  --panel:#0f1b33;
+  --panel2:#0c1730;
+  --text:#e8eefc;
+  --muted:#a9b6d6;
+  --line:rgba(255,255,255,.10);
+  --primary:#4f8cff;
+  --danger:#ff4d4d;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 10% 10%, rgba(79,140,255,.18), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.06), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.card{
+  width:min(900px, 95vw);
+  border-radius:20px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(10px);
+  box-shadow:0 20px 50px rgba(0,0,0,.4);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:300px 1fr;
+}
+
+@media(max-width:800px){
+  .card{grid-template-columns:1fr;}
+}
+
+.sidebar{
+  background:rgba(12,23,48,.6);
+  padding:25px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:15px;
+  border-right:1px solid var(--line);
+}
+
+.avatar{
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid var(--primary);
+  background:#1e293b;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.username{
+  font-size:18px;
+  font-weight:900;
+}
+
+.email{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.content{
+  padding:30px;
+}
+
+h1{
+  margin:0 0 20px 0;
+  font-size:22px;
+}
+
+form{
+  display:grid;
+  gap:15px;
+}
+
+label{
+  font-size:13px;
+  color:var(--muted);
+}
+
+input, textarea, select{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(12,23,48,.6);
+  color:var(--text);
+  outline:none;
+}
+
+input:focus, textarea:focus{
+  border-color:rgba(79,140,255,.6);
+  box-shadow:0 0 0 3px rgba(79,140,255,.15);
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.btn{
+  padding:12px 16px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+  text-decoration:none;
+  color:var(--text);
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.1);
+}
+
+.btn--primary{
+  background:rgba(79,140,255,.25);
+  border-color:rgba(79,140,255,.4);
+}
+
+.btn--danger{
+  background:rgba(255,77,77,.2);
+  border-color:rgba(255,77,77,.4);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- LEFT SIDE -->
+  <div class="sidebar">
+    <div class="avatar">
+      {% if request.user.image %}
+        <img src="{{ request.user.image.url }}" alt="avatar">
+      {% else %}
+        <img src="https://via.placeholder.com/150">
+      {% endif %}
+    </div>
+
+    <div class="username">{{ request.user.username }}</div>
+    <div class="email">{{ request.user.email }}</div>
+
+    <a class="btn" href="{% url 'home' %}">🏠 Home</a>
+    <a class="btn btn--danger" href="{% url 'logout' %}">🚪 Logout</a>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="content">
+    <h1>Profilni tahrirlash</h1>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% for field in form %}
+        <div>
+          <label>{{ field.label }}</label>
+          {{ field }}
+        </div>
+      {% endfor %}
+
+      <div class="actions">
+        <button class="btn btn--primary" type="submit">Saqlash</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+</body>
+</html>

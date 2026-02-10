@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sotilgan mahsulotlar</title>
+  <style>
+    body{margin:0;font-family:system-ui;background:#0b1220;color:#e8eefc}
+    .wrap{width:min(1100px,92vw);margin:24px auto}
+    .top{display:flex;justify-content:space-between;align-items:center;
+      padding:16px;border:1px solid rgba(255,255,255,.1);border-radius:14px;
+      background:rgba(255,255,255,.04)}
+    .muted{color:#94a3b8;font-size:13px}
+    .card{margin-top:14px;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.03)}
+    .row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;
+      border-top:1px solid rgba(255,255,255,.08)}
+    .row:first-child{border-top:none}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.04);color:#e8eefc;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div style="font-weight:900;font-size:18px;">✅ Sotilgan mahsulotlar</div>
+        <div class="muted">Sizning mahsulotlaringiz bo‘yicha sotuvlar</div>
+      </div>
+      <a class="btn" href="{% url 'seller_dashboard' %}">⬅ Orqaga</a>
+    </div>
+
+    <div class="card">
+      {% for item in sold_items %}
+        <div class="row">
+          <div>
+            <div style="font-weight:900;">{{ item.product.title }}</div>
+            <div class="muted">
+              Xaridor: {{ item.order.user.username }} |
+              Sana: {{ item.order.created_at|date:"d-m-Y H:i" }} |
+              Buyurtma #{{ item.order.id }}
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:900;">{{ item.quantity }} dona</div>
+            <div class="muted">{{ item.price }}</div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="muted" style="text-align:center;padding:18px;">Hozircha sotuv yo‘q.</div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

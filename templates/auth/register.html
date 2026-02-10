@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ro‘yxatdan o‘tish</title>
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --panel:#0f1b33;
+      --panel2:#0c1730;
+      --text:#e8eefc;
+      --muted:#a9b6d6;
+      --line:rgba(255,255,255,.10);
+      --primary:#4f8cff;
+      --danger:#ff4d4d;
+      --good:#22c55e;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(79,140,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.06), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:min(560px, 92vw);
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .head{ padding:18px; }
+    h1{ margin:0; font-size:22px; }
+    .sub{ margin:8px 0 0 0; color:var(--muted); font-size:13px; }
+
+    form{ padding: 0 18px 18px 18px; display:grid; gap:12px; }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width:560px){
+      .grid{ grid-template-columns:1fr; }
+    }
+
+    label{ font-size:13px; color:var(--muted); }
+    input{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(12,23,48,.60);
+      color:var(--text);
+      outline:none;
+    }
+    input:focus{
+      border-color: rgba(79,140,255,.55);
+      box-shadow: 0 0 0 4px rgba(79,140,255,.15);
+    }
+
+    .alert{
+      border-radius:14px;
+      padding:12px 12px;
+      border:1px solid rgba(255,77,77,.25);
+      background: rgba(255,77,77,.10);
+      color:#ffd1d1;
+      font-size:13px;
+    }
+
+    .btn{
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(79,140,255,.35);
+      background: rgba(79,140,255,.22);
+      color:var(--text);
+      font-weight:800;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(79,140,255,.30); }
+
+    .footer{
+      padding: 0 18px 18px 18px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .link{ color: var(--primary); text-decoration:none; }
+    .link:hover{ text-decoration:underline; }
+
+    .note{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+      padding:12px;
+      border-radius:14px;
+      font-size:13px;
+      line-height:1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="head">
+      <h1>Ro‘yxatdan o‘tish</h1>
+      <p class="sub">Ma’lumotlarni to‘ldiring — emailga tasdiqlash kodi boradi</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% if error %}
+        <div class="alert">{{ error }}</div>
+      {% endif %}
+
+      <div class="grid">
+        <div>
+          <label>Username</label>
+          <input type="text" name="username" placeholder="username..." required>
+        </div>
+
+        <div>
+          <label>Telefon</label>
+          <input type="text" name="phone" placeholder="+998..." required>
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input type="email" name="email" placeholder="email..." required>
+        </div>
+
+        <div>
+          <label>Rasm (avatar)</label>
+          <input type="file" name="image" accept="image/*" required>
+        </div>
+
+        <div>
+          <label>Parol</label>
+          <input type="password" name="password" placeholder="parol..." required>
+        </div>
+
+        <div>
+          <label>Parolni tasdiqlang</label>
+          <input type="password" name="confirm_password" placeholder="qayta parol..." required>
+        </div>
+      </div>
+
+        <div>
+          <label>Hisob turi</label>
+          <select name="role">
+            <option value="customer">Oddiy foydalanuvchi</option>
+            <option value="seller">Sotuvchi</option>
+          </select>
+        </div>
+
+
+      <div class="note">
+        Emailga tasdiqlash kodi yuboriladi. Kodni tasdiqlamasangiz akkaunt aktiv bo‘lmaydi.
+      </div>
+
+      <button class="btn" type="submit">Ro‘yxatdan o‘tish</button>
+    </form>
+
+    <div class="footer">
+      <span>Akkauntingiz bormi?</span>
+      <a class="link" href="{% url 'login' %}">Kirish</a>
+    </div>
+  </div>
+</body>
+</html>

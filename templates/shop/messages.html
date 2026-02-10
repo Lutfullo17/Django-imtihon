@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <title>Xabarlar</title>
+  <style>
+    body{margin:0;font-family:sans-serif;background:#111;color:white}
+    .container{display:flex;height:100vh}
+    .left{width:30%;background:#1a1a1a;padding:15px;overflow:auto}
+    .right{flex:1;display:flex;flex-direction:column}
+    .chat{flex:1;padding:15px;overflow:auto}
+    .msg{margin:8px 0}
+    .me{text-align:right}
+    textarea{width:100%;padding:10px;margin-top:5px}
+    button{padding:10px 15px;margin-top:8px;cursor:pointer}
+    a{color:white;text-decoration:none}
+    .convo{padding:10px;border-bottom:1px solid #333}
+    .empty{color:#94a3b8}
+      .back-btn{
+          padding:8px 14px;
+          background:#333;
+          color:blue;
+          border:none;
+          border-radius:8px;
+          cursor:pointer;
+        }
+        .back-btn:hover{background:#444;}
+      .btnhome {
+            background:#333;
+            border-radius:12px;
+
+      }
+
+  </style>
+</head>
+<body>
+
+
+<div class="container">
+
+  <!-- LEFT PANEL -->
+  <div class="left">
+      <button  class="btnhome"><h3><a href="{% url 'home' %}">🏠 Home</a></h3></button>
+
+    <h3>💬 Suhbatlar</h3>
+
+    {% for x in conversations %}
+      <div class="convo">
+        {# boshqa odamni topamiz: sender men bo‘lsam receiver, aks holda sender #}
+        {% if x.sender == request.user %}
+          <a href="{% url 'messages' x.product.id x.receiver.id %}">
+            {{ x.product.title }} <br>
+            {{ x.receiver.username }}
+          </a>
+        {% else %}
+          <a href="{% url 'messages' x.product.id x.sender.id %}">
+            {{ x.product.title }} <br>
+            {{ x.sender.username }}
+          </a>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p class="empty">Hali xabar yo‘q</p>
+    {% endfor %}
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right">
+
+    {% if product and other %}
+      <div class="chat">
+        <h3>{{ other.username }} — {{ product.title }}</h3>
+
+        {% for m in chat_messages %}
+          <div class="msg {% if m.sender == request.user %}me{% endif %}">
+            <b>{{ m.sender.username }}:</b> {{ m.text }}
+          </div>
+        {% empty %}
+          <p class="empty">Hali xabar yo‘q. Birinchi bo‘lib yozing 🙂</p>
+        {% endfor %}
+      </div>
+
+      <form method="post" style="padding:15px;">
+        {% csrf_token %}
+        {{ form.text }}
+        <button type="submit">Yuborish</button>
+      </form>
+
+    {% else %}
+      <div class="chat">
+        <h3>Suhbatni tanlang</h3>
+        <p class="empty">Chap tomondan suhbatni tanlang yoki mahsulot detail’dan “Sotuvchiga yozish” ni bosing.</p>
+      </div>
+    {% endif %}
+
+  </div>
+
+</div>
+
+</body>
+</html>

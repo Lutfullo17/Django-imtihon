@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout</title>
+
+  <style>
+    body{margin:0;font-family:system-ui;background:#0b1220;color:#e8eefc}
+    .wrap{width:min(1000px,92vw);margin:24px auto}
+    .top{display:flex;justify-content:space-between;align-items:center;
+      padding:16px;border:1px solid rgba(255,255,255,.1);border-radius:14px;
+      background:rgba(255,255,255,.04)}
+    .muted{color:#94a3b8}
+    .grid{margin-top:16px;display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.03)}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.04);color:#e8eefc;text-decoration:none;cursor:pointer}
+    .btn:hover{background:rgba(255,255,255,.08)}
+    .btn.primary{background:#2563eb;border-color:#2563eb}
+    .btn.primary:hover{background:#1d4ed8}
+    .row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;
+      border-top:1px solid rgba(255,255,255,.08)}
+    .row:first-child{border-top:none}
+    .pname{font-weight:800}
+    .pill{font-size:12px;color:#cbd5e1;border:1px solid rgba(255,255,255,.12);
+      padding:4px 8px;border-radius:999px}
+    .total{display:flex;justify-content:space-between;align-items:center;margin-top:12px;
+      padding-top:12px;border-top:1px solid rgba(255,255,255,.12)}
+    input, textarea{
+      width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);color:#e8eefc;outline:none
+    }
+    label{display:block;margin:10px 0 6px;color:#94a3b8;font-size:13px}
+    .error{margin:10px 0;color:#ff6b6b}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div style="font-weight:900;font-size:18px;">🧾 Checkout</div>
+        <div class="muted">Buyurtmani tasdiqlash</div>
+      </div>
+      <a class="btn" href="{% url 'home' %}">⬅ Orqaga</a>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: CART ITEMS -->
+      <div class="card">
+        <div style="font-weight:900;margin-bottom:10px;">🛒 Savat</div>
+
+        {% for item in cart_items %}
+          <div class="row">
+            <div>
+              <div class="pname">{{ item.product.title }}</div>
+              <div class="muted" style="margin-top:4px;">
+                <span class="pill">{{ item.quantity }} dona</span>
+              </div>
+            </div>
+            <div style="font-weight:800;">
+              {{ item.total_price }}
+            </div>
+          </div>
+        {% empty %}
+          <div class="muted">Savat bo‘sh.</div>
+        {% endfor %}
+
+        <div class="total">
+          <div class="muted">Jami</div>
+          <div style="font-weight:900;font-size:18px;">{{ total_price }}</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: CONFIRM -->
+      <div class="card">
+        <div style="font-weight:900;margin-bottom:10px;">✅ Buyurtmani tasdiqlash</div>
+        <div class="muted" style="margin-bottom:12px;">
+          “Buyurtma berish” ni bosganda Order va OrderItem yaratiladi.
+        </div>
+
+        {% if error %}
+          <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+
+          <!-- Agar keyinroq ism/telefon/manzil qo‘shmoqchi bo‘lsang, shu inputlarni ochib qo'yamiz -->
+
+          <label>Ism Familiya</label>
+          <input name="full_name" placeholder="Ism familiya">
+
+          <label>Telefon</label>
+          <input name="phone" placeholder="+998..">
+
+          <label>Manzil</label>
+          <input name="address" placeholder="Toshkent, ...">
+
+          <label>Izoh</label>
+          <textarea name="note" rows="3" placeholder="Ixtiyoriy"></textarea>
+
+
+          <button type="submit" class="btn primary" style="width:100%;margin-top:8px;">
+            🧾 Buyurtma berish
+          </button>
+        </form>
+
+        <div class="muted" style="margin-top:12px;font-size:13px;">
+          Eslatma: checkout faqat savat bo‘lsa ishlaydi.
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Izohlar</title>
+  <style>
+    body{margin:0;font-family:system-ui;background:#0b1220;color:#e8eefc}
+    .wrap{width:min(1100px,92vw);margin:24px auto}
+    .top{display:flex;justify-content:space-between;align-items:center;
+         padding:16px;border:1px solid rgba(255,255,255,.1);border-radius:14px;
+         background:rgba(255,255,255,.04)}
+    .muted{color:#94a3b8}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);
+         background:rgba(255,255,255,.04);color:#e8eefc;text-decoration:none}
+    .box{margin-top:16px;border:1px solid rgba(255,255,255,.1);border-radius:14px;
+         background:rgba(255,255,255,.03);overflow:hidden}
+    .row{padding:14px;border-top:1px solid rgba(255,255,255,.08)}
+    .row:first-child{border-top:none}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;color:#94a3b8}
+    .text{margin-top:8px;line-height:1.4}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div style="font-weight:900;font-size:18px;">💬 Mijoz izohlari</div>
+        <div class="muted">Sizning mahsulotlaringizga yozilgan commentlar</div>
+      </div>
+      <a class="btn" href="{% url 'seller_dashboard' %}">⬅ Orqaga</a>
+    </div>
+
+    <div class="box">
+      {% for c in comments %}
+        <div class="row">
+          <div class="meta">
+            <div>👤 {{ c.user.username }}</div>
+            <div>📦 {{ c.product.title }}</div>
+            <div>🕒 {{ c.created_at|date:"d-m-Y H:i" }}</div>
+          </div>
+          <div class="text">{{ c.text }}</div>
+        </div>
+      {% empty %}
+        <div class="row muted" style="text-align:center;padding:24px;">
+          Hozircha izoh yo‘q.
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

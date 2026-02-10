@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>O‘chirish</title>
+  <style>
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,Arial;background:#f6f7fb;color:#111}
+    .wrap{max-width:720px;margin:28px auto;padding:0 16px}
+    .box{background:#fff;border:1px solid #e8eaf2;border-radius:14px;box-shadow:0 8px 24px rgba(15,23,42,.05);padding:18px}
+    .title{font-size:18px;font-weight:900;margin:0 0 10px}
+    .p{color:#334155;margin:0 0 14px;line-height:1.5}
+    .prod{display:flex;gap:12px;align-items:center;border:1px solid #eef1f7;border-radius:12px;padding:10px;background:#fafbff;margin-bottom:14px}
+    .img{width:64px;height:64px;border-radius:12px;object-fit:cover;background:#eef1f7}
+    .name{font-weight:900}
+    .price{color:#475569;font-size:13px;margin-top:2px}
+    .actions{display:flex;gap:10px}
+    .btn{flex:1;border:0;border-radius:10px;padding:10px 14px;font-weight:900;cursor:pointer}
+    .del{background:#be123c;color:#fff}
+    .back{background:#eef1f7;color:#111;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+    .btn:active{transform:translateY(1px)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="box">
+      <h1 class="title">Mahsulotni o‘chirish</h1>
+      <p class="p">Rostdan ham shu mahsulotni o‘chirmoqchimisiz? Bu amal ortga qaytmaydi.</p>
+
+      <div class="prod">
+        {% if mahsulot.image %}
+          <img class="img" src="{{ mahsulot.image.url }}" alt="{{ mahsulot.title }}">
+        {% else %}
+          <div class="img"></div>
+        {% endif %}
+        <div>
+          <div class="name">{{ mahsulot.title }}</div>
+          <div class="price">Narx: {{ mahsulot.price }}</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <form method="post" style="flex:1;">
+          {% csrf_token %}
+          <button class="btn del" type="submit">Ha, o‘chir</button>
+        </form>
+        <a class="btn back" href="{% url 'mahsulotlarim' %}">Yo‘q, qayt</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

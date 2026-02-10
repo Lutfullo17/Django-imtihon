@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verification</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #4b5cff, #6a5acd);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    background: #fff;
+    padding: 30px 25px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.otp-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 24px;
+    text-align: center;
+    letter-spacing: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    margin-bottom: 20px;
+}
+
+.otp-input:focus {
+    border-color: #4b5cff;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #1f8b4c;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #15703c;
+}
+
+.resend {
+    display: block;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #666;
+}
+
+.resend a {
+    color: #4b5cff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+        .extra {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .extra a {
+            color: red;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .extra a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>Email Verification</h2>
+        <p>We sent a verification code to your email.<br>Please enter it below.</p>
+        <form method="post">
+            {% csrf_token %}
+        <input
+            type="text"
+            maxlength="6"
+            class="otp-input"
+            placeholder="123456"
+            name="code"
+        >
+            {% if error%}
+            <p>{{error}}</p>
+            {% endif %}
+            <p id="timer" style="color:red; font-size:25px;"></p>
+
+        <button type="submit">Verify Code</button>
+
+        <div class="extra"> Get a new code?
+            <a id="resendBtn" href="#"
+            style="pointer-events:none; opacity:0.5; margin-left:10px;">
+            Reset
+        </a>
+        </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    let time = 120; // 2 daqiqa
+    const timerElement = document.getElementById("timer");
+    const resendBtn = document.getElementById("resendBtn");
+
+    const countdown = setInterval(() => {
+        let minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+
+        timerElement.innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        time--;
+
+        if (time < 0) {
+            clearInterval(countdown);
+            timerElement.innerText = "Kod muddati tugadi. Reset bosing.";
+            resendBtn.style.pointerEvents = "auto";
+            resendBtn.style.opacity = "1";
+        }
+    }, 1000);
+</script>
+</body>
+</html>
