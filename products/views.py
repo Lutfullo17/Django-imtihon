@@ -82,7 +82,9 @@ def home(request):
     if request.user.is_authenticated and getattr(request.user, "role", None) == "seller":
         return redirect("seller_dashboard")
     products = Product.objects.all().order_by("-created_at")[:20]
-    return render(request, "index.html", {"products":products})
+    category = Category.objects.all().order_by("name")
+
+    return render(request, "index.html", {"products":products, "category": category})
 
 def sotuvchi_tek(user):
     return user.is_authenticated and getattr(user, "role", None) == "seller"
@@ -146,19 +148,31 @@ def mahsulot_delete(request,id):
 
     return render(request, "seller/Ochirish.html", {"mahsulot": mahsulot})
 
-
 def maxsulotlar(request):
+    category = Category.objects.all().order_by("name")
+
     form = QidiruvForm(request.GET)
-    q = ''
+    q = ""
     if form.is_valid():
         q = form.cleaned_data.get("q") or ""
 
+    cat = request.GET.get("cat") or ""
+
     queryset = Product.objects.all().order_by("-created_at")
+
     if q:
         queryset = queryset.filter(Q(title__icontains=q) | Q(desc__icontains=q))
 
-    return render(request, "maxsulotlar.html", {"maxsulotlar": queryset, "form": form, "q": q})
+    if cat:
+        queryset = queryset.filter(category_id=cat)
 
+    return render(request, "maxsulotlar.html", {
+        "maxsulotlar": queryset,
+        "category": category,
+        "form": form,
+        "q": q,
+        "cat": cat,
+    })
 
 def maxsulot_detail(request, id):
     maxsulot = get_object_or_404(Product,  id=id)

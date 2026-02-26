@@ -60,6 +60,7 @@
     }
     .logo__text{ line-height:1.1; }
     .logo__text small{ display:block; color:var(--muted); font-weight:600; font-size:12px; margin-top:2px; }
+    .cat{ text-decoration:none; color:inherit; display:inline-flex; }
 
     .search{
       flex: 1;
@@ -526,17 +527,17 @@
       </div>
 
       <!-- Categories -->
-      <div class="cats">
-        <div class="cats__row" id="catsRow">
-          <div class="cat" data-q="telefon">📱 Telefonlar</div>
-          <div class="cat" data-q="noutbuk">💻 Noutbuk</div>
-          <div class="cat" data-q="quloqchin">🎧 Quloqchin</div>
-          <div class="cat" data-q="soat">⌚ Soat</div>
-          <div class="cat" data-q="maishiy">🧺 Maishiy</div>
-          <div class="cat" data-q="kiyim">👕 Kiyim</div>
-          <div class="cat" data-q="poyabzal">👟 Poyabzal</div>
-          <div class="cat" data-q="aksessuar">🧩 Aksessuar</div>
+        <div class="cats">
+         <div class="cats__row" id="catsRow">
+          {% for c in category %}
+
+            <a class="cat {% if cat == c.id|stringformat:'s' %}active{% endif %}"
+               href="{% url 'maxsulotlar' %}?cat={{ c.id }}">
+              {{ c.name }}
+            </a>
+          {% endfor %}
         </div>
+
       </div>
     </div>
   </header>
